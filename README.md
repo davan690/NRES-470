@@ -1,6 +1,9 @@
 # ToDO
 
 Extended by Anthony Davidson
+- [ ] Organise and structure files
+  - *maybe to bookdown structure??*
+- [ ] Add SRW matrix population model
 
 # NRES-470
 
