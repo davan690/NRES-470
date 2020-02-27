@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="NRES 470/670" />
@@ -24,8 +24,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -34,10 +34,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -71,9 +73,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -87,13 +87,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -109,7 +114,6 @@ body {
   padding-top: 57px;
   margin-top: -57px;
 }
-
 .section h2 {
   padding-top: 57px;
   margin-top: -57px;
@@ -129,6 +133,43 @@ body {
 .section h6 {
   padding-top: 57px;
   margin-top: -57px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -150,47 +191,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -204,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -239,8 +305,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -249,6 +313,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -413,8 +487,8 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Lab 5: Intro to stochastic models</h1>
-<h4 class="author"><em>NRES 470/670</em></h4>
-<h4 class="date"><em>Feb 15, 2017</em></h4>
+<h4 class="author">NRES 470/670</h4>
+<h4 class="date">Feb 15, 2017</h4>
 
 </div>
 
@@ -457,10 +531,7 @@ div.tocify {
 <div id="exercise-1-uncertainty" class="section level2">
 <h2>Exercise 1: Uncertainty!</h2>
 <p>Start with a basic exponentially growing population that looks something like this:</p>
-<div class="figure">
-<img src="IM10.jpg" />
-
-</div>
+<p><img src="IM10.jpg" /></p>
 <p>This should look familiar!</p>
 <p>Set <em>Birth rate</em> equal to 0.4 and <em>Death rate</em> equal to 0.3 (just like we did in class). <em>Set initial abundance to 10</em>. Under the “Settings” menu set the model to run for 10 years. Make sure your <em>Population</em> stock can not go negative (this is a setting in the configurations panel). Hit “Simulate”- you should see <em>exponential growth</em>!</p>
 <p>What if we have imperfect knowledge about birth rate? The data we have are consistent with a birth rate <span class="math inline">\(b\)</span> as low as 0.2 and as high as 0.5. Run the model with the lowest and the highest possible birth rate. Now use the “Compare Results” tool (under the “Tools” menu in the upper right corner…) to visualize the range of possible population growth trajectories that would be possible given our <em>uncertainty</em> about the per-capita birth rate.</p>
@@ -504,15 +575,9 @@ div.tocify {
 <div id="exercise-3-minimum-viable-population" class="section level2">
 <h2>Exercise 3: Minimum Viable Population</h2>
 <p>The aruba island rattlesnake, or Cascabel (<em>Crotalus durissus unicolor</em>), is the top predator on the island of Aruba, and primarily consumes rodents.</p>
-<div class="figure">
-<img src="aruba_rattlesnake1.jpg" />
-
-</div>
+<p><img src="aruba_rattlesnake1.jpg" /></p>
 <p>The Aruba island rattlenake, as you might expect, occurs only on the island of Aruba.</p>
-<div class="figure">
-<img src="aruba1.png" />
-
-</div>
+<p><img src="aruba1.png" /></p>
 <p>The Aruba rattlesnake is listed as <em>Critically Endangered</em> by IUCN, and has several attributes that make it particularly susceptible to falling into the <strong>extinction vortex</strong>:</p>
 <ul>
 <li>Range is limited to the small island of Aruba<br />
@@ -557,9 +622,7 @@ div.tocify {
 <p>3c. Find the <strong>minimum viable population (MVP)</strong>. (Note: refer to the “small population paradigm” lecture for more detail on the concept of Minimum Viable Population). Explain your reasoning, and provide plot(s) to back up your answer.</p>
 <p><em>Congratulations, you have run your first PVA model!!</em></p>
 <p>3d. (thought question) The Aruba island rattlesnake is limited to the small island of Aruba. This fact alone is one of the main reasons this species is listed as <em>Critically Endangered</em> under the IUCN Red List (the major global ranking of conservation status). Explain why small range size might generally be associated with high extinction risk.</p>
-</div>
-<div id="checklist-for-lab-5-completion" class="section level2">
-<h2>Checklist for Lab 5 completion</h2>
+<p>##Checklist for Lab 5 completion</p>
 <ul>
 <li><p>Please bundle all your responses into a single Word document and submit <em>using WebCampus</em>!</p></li>
 <li><p>Where appropriate, URLs for your InsightMaker models should be pasted in your lab submission (MS Word document). See details below…</p>
@@ -567,7 +630,7 @@ div.tocify {
 <li>After you save the model you should see a link on the top left-hand corner, “Insight Access”. Click on that link, and a new window will pop up. Under “allow update access”, add a username (i.e., kevintshoemaker or waldenTA). click on the “Add User” button, and then click on “Submit”. Finally, copy and paste the URL into the Word document.</li>
 </ul></li>
 </ul>
-<p><strong><em>Due Mar. 10 at 11 am.</em></strong></p>
+<p><strong><em>Due Mar. 10 at 11 am.</em></strong></p>
 <ul>
 <li>Word document with short answers, model URLs, and figures (where appropriate)
 <ul>
@@ -621,12 +684,55 @@ $(document).ready(function () {
 
 </script>
 
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

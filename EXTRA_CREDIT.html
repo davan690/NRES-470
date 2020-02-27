@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="NRES 470/670" />
 
+<meta name="date" content="2017-03-09" />
 
 <title>Extra credit options</title>
 
@@ -24,8 +25,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -34,10 +35,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -71,9 +74,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -87,13 +88,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -109,7 +115,6 @@ body {
   padding-top: 57px;
   margin-top: -57px;
 }
-
 .section h2 {
   padding-top: 57px;
   margin-top: -57px;
@@ -129,6 +134,43 @@ body {
 .section h6 {
   padding-top: 57px;
   margin-top: -57px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -150,47 +192,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -204,6 +265,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -239,8 +306,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -249,6 +314,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -413,8 +488,8 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Extra credit options</h1>
-<h4 class="author"><em>NRES 470/670</em></h4>
-<h4 class="date"><em>March 9, 2017</em></h4>
+<h4 class="author">NRES 470/670</h4>
+<h4 class="date">March 9, 2017</h4>
 
 </div>
 
@@ -430,11 +505,7 @@ div.tocify {
 2. Engage with original scientific literature in this field of study.</p>
 <p>Select a <em>peer-reviewed journal article</em> on a topic <em>relevant to population ecology</em>.</p>
 <ul>
-<li>The article should develop a population model to address a conservation or management question
-<ul>
-<li>The article could present newly collected data that were then analyzed to parameterize a population model, <em>OR</em> could present an analysis of already existing data to develop a different population model than has already been developed for the species/system.</li>
-<li>For an example of the type of article you should look for (PDF is in the “Files” folder on WebCampus and linked to the assignment page):</li>
-</ul></li>
+<li>The article should develop a population model to address a conservation or management question - The article could present newly collected data that were then analyzed to parameterize a population model, <em>OR</em> could present an analysis of already existing data to develop a different population model than has already been developed for the species/system. - For an example of the type of article you should look for (PDF is in the “Files” folder on WebCampus and linked to the assignment page):</li>
 </ul>
 <blockquote>
 <p><a href="crowder1994.pdf">Crowder, Larry B., Crouse, D., Heppell, S., and Martin, T. 1994. Predicting the impact of turtle excluder devices on loggerhead sea turtle populations. Ecological Applications 4(3):437–445.</a></p>
@@ -492,114 +563,114 @@ div.tocify {
 <tr class="header">
 <th align="left">Criteria</th>
 <th align="left">Details</th>
-<th align="right">Points.Possible</th>
+<th align="left">Points.Possible</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Article selection</td>
-<td align="left">Provide complete citation of journal article at the top of your written response:</td>
-<td align="right">1</td>
+<td align="left">Talk selection</td>
+<td align="left">Provide complete information about the talk you attended (speaker, title, location/institution, website (if applicable).</td>
+<td align="left">1</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">(1) Peer-reviewed</td>
-<td align="right">NA</td>
+<td align="left">(1) Topic relevant to course</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
-<td align="left">(2) Topic relevant to course</td>
-<td align="right">NA</td>
-</tr>
-<tr class="even">
-<td align="left">Summary</td>
+<td align="left">Concepts relevant to course</td>
 <td align="left">One or two paragraphs:</td>
-<td align="right">3</td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left">(1) Identify main research question or hypothesis.</td>
-<td align="right">NA</td>
+<td align="left">3</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">(2) Accurately summarize relevant methods</td>
-<td align="right">NA</td>
+<td align="left">(1) Identify specific concepts discussed in the talk that we’ve been learning about in class.</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
-<td align="left">·         How were data gathered?</td>
-<td align="right">NA</td>
+<td align="left">(2) How were these concepts presented in the talk?</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">·         What analyses were performed to estimate model parameters?</td>
-<td align="right">NA</td>
+<td align="left">·         What was familiar about how the concepts were discussed?</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
-<td align="left">·         How was the final model selected?</td>
-<td align="right">NA</td>
+<td align="left">·         What, if anything, did you learn about these concepts that you hadn’t considered before or that you were unaware about?</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">·         Note: Do your best to use plain English for this summary, highlighting what makes sense to you in terms of what we’ve gone over in class.</td>
-<td align="right">NA</td>
+<td align="left">(3) Identify one concept in the talk that either (a) has not been discussed in class, or (b) has been discussed in class but you’d like to learn about it in more depth.</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
-<td align="left">(3) Accurately relay main findings, conclusions, and/or importance of findings in an ecological context.</td>
-<td align="right">NA</td>
-</tr>
-<tr class="even">
-<td align="left">Describe application of research to conserve-ation or management</td>
+<td align="left">Describe application of research/ information to conserve-ation or man-agement</td>
 <td align="left">One or two paragraphs</td>
-<td align="right">3</td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left">(1) How does this article apply the principles of population ecology to a relevant management or conservation problem?</td>
-<td align="right">NA</td>
+<td align="left">3</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">(2) How could these methods/approaches be applied to a similar (or different!) system, conservation problem, or management issue?</td>
-<td align="right">NA</td>
+<td align="left">(1) What management or conservation problem was the talk primarily concerned with?</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
-<td align="left">(3) What, if anything, was novel or unusual about this approach or method? Does this article advance the field of population ecology or our understanding of the particular ecological system?</td>
-<td align="right">NA</td>
+<td align="left">·         Explain the management or conservation challenge.</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
+<td align="left"></td>
+<td align="left">·         Summarize how the researcher attempted to address the challenge using population ecology.</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">(2) Do you think the researcher’s approach could be generalized to other systems or species? Why or why not?</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">(3) Are you satisfied that the researcher(s) solved the problem? Why or why not?</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
 <td align="left">Personal response</td>
 <td align="left">One or two paragraphs</td>
-<td align="right">3</td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left">(1) Why did you select this article?</td>
-<td align="right">NA</td>
+<td align="left">3</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">(2) What relevance does this article have for either your work in this class, your degree program, and/or your present or future career?</td>
-<td align="right">NA</td>
+<td align="left">(1) What did you find particularly effective about this talk?</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
-<td align="left">(3) If you were to perform this same study, would you keep everything the same? What would you change?</td>
-<td align="right">NA</td>
+<td align="left">·         For example: was the researcher a particularly dynamic speaker? Did the audience ask a really insightful question that left you thinking more about the talk? Were the visuals provided effective at communicating essential information?</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">(2) If you had to summarize the talk’s “take-away” message in one sentence, what would that sentence be?</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">(3) If you were to give a similar presentation to a similar audience, what would you choose to borrow from this talk in order to be an effective communicator? Is there anything you would do differently to make your message more clearly understood?</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
 <td align="left">(4) What did you find particularly interesting, intriguing, or surprising about this study?</td>
-<td align="right">NA</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">#### Grading Rubric, option 2:</td>
 <td align="left"></td>
-<td align="right"></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
@@ -758,12 +829,55 @@ $(document).ready(function () {
 
 </script>
 
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="NRES 470/670" />
@@ -24,8 +24,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -34,10 +34,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -71,9 +73,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -87,13 +87,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -109,7 +114,6 @@ body {
   padding-top: 57px;
   margin-top: -57px;
 }
-
 .section h2 {
   padding-top: 57px;
   margin-top: -57px;
@@ -129,6 +133,43 @@ body {
 .section h6 {
   padding-top: 57px;
   margin-top: -57px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -150,47 +191,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -204,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -239,8 +305,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -249,6 +313,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -413,18 +487,15 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Age-structured populations</h1>
-<h4 class="author"><em>NRES 470/670</em></h4>
-<h4 class="date"><em>Feb 8, 2017</em></h4>
+<h4 class="author">NRES 470/670</h4>
+<h4 class="date">Feb 8, 2017</h4>
 
 </div>
 
 
 <div id="when-d-and-b-depend-on-more-than-just-density" class="section level2">
 <h2>When <span class="math inline">\(d\)</span> and <span class="math inline">\(b\)</span> depend on more than just density…</h2>
-<div class="figure">
-<img src="elephant1.jpg" />
-
-</div>
+<p><img src="elephant1.jpg" /></p>
 <p>Take this Indian elephant for example. How does reproductive rate depend on age in this case?</p>
 <p>We might imagine it looks something like this!</p>
 <pre class="r"><code>Elephant_age &lt;- seq(0,60,by=2)
@@ -435,10 +506,7 @@ names(Birth_rate) &lt;- Elephant_age
 
 barplot(Birth_rate,xlab=&quot;Age&quot;,ylab=&quot;b, per-capita birth rate&quot;,col=&quot;blue&quot;)</code></pre>
 <p><img src="LECTURE6_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<div class="figure">
-<img src="tortoise1.jpg" />
-
-</div>
+<p><img src="tortoise1.jpg" /></p>
 <p>What about per-capita death rates for a tortoise? We might imagine something that looks like this…</p>
 <pre class="r"><code>Tortoise_age &lt;- seq(0,120,by=5)
 
@@ -449,15 +517,9 @@ names(Death_rate) &lt;- Tortoise_age
 barplot(Death_rate,xlab=&quot;Age&quot;,ylab=&quot;d, per-capita death rate&quot;,col=&quot;blue&quot;)</code></pre>
 <p><img src="LECTURE6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>So, for many species per-capita birth rate and death rate are fundamentally dependent on age!</p>
-<div class="figure">
-<img src="spadefoot1.jpg" />
-
-</div>
+<p><img src="spadefoot1.jpg" /></p>
 <p><strong>Thought Q:</strong> Imagine you were trying to re-establish a population of spadefoot toads. You take 1000 tadpoles from a captive population and place them in a temporary wetland right after a rainstorm. What would population growth look like over the next few years, assuming the reintroduction strategy was successful?</p>
-<div class="figure">
-<img src="tamarin1.jpg" />
-
-</div>
+<p><img src="tamarin1.jpg" /></p>
 <p><strong>Thought Q:</strong> Imagine a population of 100 golden-headed lion tamarins (<em>Leontopithecus chrysomelas</em>) that consists of all adult males and post-reproductive females. What is the conservation status of this population?</p>
 </div>
 <div id="life-table" class="section level2">
@@ -528,28 +590,16 @@ barplot(Death_rate,xlab=&quot;Age&quot;,ylab=&quot;d, per-capita death rate&quot
 <p>Survivorship curves describe how survivorship (<span class="math inline">\(l(x)\)</span>) drops off with age. These three types of <strong>life history</strong> pattern can be illustrated with three real-world examples: humans, songbirds, and frogs.</p>
 <div id="type-i" class="section level4">
 <h4>Type I</h4>
-<div class="figure">
-<img src="human1.png" />
-
-</div>
+<p><img src="human1.png" /></p>
 </div>
 <div id="type-ii" class="section level4">
 <h4>Type II</h4>
-<div class="figure">
-<img src="songbird1.jpg" />
-
-</div>
+<p><img src="songbird1.jpg" /></p>
 </div>
 <div id="type-iii" class="section level4">
 <h4>Type III</h4>
-<div class="figure">
-<img src="frog1.jpg" />
-
-</div>
-<div class="figure">
-<img src="Survivorship_Curves.jpg" />
-
-</div>
+<p><img src="frog1.jpg" /></p>
+<p><img src="Survivorship_Curves.jpg" /></p>
 <p><strong>Thought Q:</strong> Which survivorship curve is the most common in nature??</p>
 </div>
 </div>
@@ -608,12 +658,55 @@ $(document).ready(function () {
 
 </script>
 
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

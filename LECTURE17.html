@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="NRES 470/670" />
@@ -24,8 +24,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -34,10 +34,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -71,9 +73,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -87,13 +87,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -109,7 +114,6 @@ body {
   padding-top: 57px;
   margin-top: -57px;
 }
-
 .section h2 {
   padding-top: 57px;
   margin-top: -57px;
@@ -129,6 +133,43 @@ body {
 .section h6 {
   padding-top: 57px;
   margin-top: -57px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -150,47 +191,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -204,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -239,8 +305,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -249,6 +313,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -413,22 +487,16 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Species interactions: prey-predator!</h1>
-<h4 class="author"><em>NRES 470/670</em></h4>
-<h4 class="date"><em>Apr 24, 2017</em></h4>
+<h4 class="author">NRES 470/670</h4>
+<h4 class="date">Apr 24, 2017</h4>
 
 </div>
 
 
 <div id="predation" class="section level2">
 <h2>Predation</h2>
-<div class="figure">
-<img src="predation1.jpg" />
-
-</div>
-<div class="figure">
-<img src="predation2.jpg" />
-
-</div>
+<p><img src="predation1.jpg" /></p>
+<p><img src="predation2.jpg" /></p>
 <p>In the case of competition, we saw that each species negatively influenced the other. In the case of prey-predator interactions, one species actually benefits from the interaction and the other species loses out!</p>
 <p>Nearly all prey-predator models, even the most state-of-the-art, complex ones, share this common framework:</p>
 <p><span class="math inline">\(\Delta V = rV^* - f(V,P)*P\)</span></p>
@@ -523,7 +591,7 @@ curve(LVnumresp(x,0.001),0,200,xlab=&quot;Victim abundance&quot;,ylab=&quot;Incr
 <h3>L-V predation model in InsightMaker</h3>
 <p>Before we go deeper into predation modeling, let’s simulate prey and predator population growth under the L-V predation model. As always, you can work in groups!</p>
 <p><strong>Step 1</strong>: First, clone <a href="https://insightmaker.com/insight/78356/Base-prey-predator-model">this Insight</a>, which provides the skeleton for a basic prey-predator model</p>
-<p><strong>Step 2</strong>: Correctly set up the equations for the variables “functional response”&quot; and “numerical response”.</p>
+<p><strong>Step 2</strong>: Correctly set up the equations for the variables “functional response”" and “numerical response”.</p>
 <p><strong>Step 3</strong>: Correctly set up the flow equations for “total prey consumed” and “predator mortality”, which refer to the the prey lost and the predators gained per time step, respectively.</p>
 <p><strong>Step 4</strong>: In the settings menu, change the simulation length to 200 and make sure that your analysis algorithm is set to “Accurate (RK4)”.</p>
 <p><strong>Step 5</strong>: Set the Initial abundance of prey and predators to 100 and 50, respectively. Set the alpha and beta terms to 0.001, and set the r_prey and q_pred terms to 0.1. Run the model and visualize the time series for prey and predators.</p>
@@ -699,14 +767,14 @@ abline(v=q/Beta,col=&quot;blue&quot;,lwd=3)   # pred</code></pre>
 <p>We can play around with these scenarios in InsightMaker. But it can be instructive to visualize in phase space first. For example, let’s incorporate a victim carrying capacity.</p>
 <div id="victim-k-in-phase-space" class="section level3">
 <h3>victim K in phase space</h3>
-<pre><code>## Warning in arrows(c(x), c(y), c(x + dx * z1/((lens2) + 0.1)), c(y + dx * :
-## zero-length arrow is of indeterminate angle and so skipped</code></pre>
+<pre><code>## Warning in arrows(c(x), c(y), c(x + dx * z1/((lens2) + 0.1)), c(y + dx * : zero-
+## length arrow is of indeterminate angle and so skipped</code></pre>
 <p><img src="LECTURE17_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>Adding isoclines, it looks something like this:</p>
 <pre class="r"><code>plot(1,1,pch=&quot;&quot;,xlim=xlim,ylim=ylim,xlab=&quot;Prey&quot;,ylab=&quot;Predators&quot;)
 phasearrows.draw(new)</code></pre>
-<pre><code>## Warning in arrows(c(x), c(y), c(x + dx * z1/((lens2) + 0.1)), c(y + dx * :
-## zero-length arrow is of indeterminate angle and so skipped</code></pre>
+<pre><code>## Warning in arrows(c(x), c(y), c(x + dx * z1/((lens2) + 0.1)), c(y + dx * : zero-
+## length arrow is of indeterminate angle and so skipped</code></pre>
 <pre class="r"><code>abline((r/Alpha),-(c/Alpha),col=&quot;red&quot;,lwd=3)   # prey
 abline(v=q/Beta,col=&quot;blue&quot;,lwd=3)   # pred</code></pre>
 <p><img src="LECTURE17_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
@@ -768,8 +836,8 @@ for(i in 1:(Nyears*10+1)){
 
 plot(1,1,pch=&quot;&quot;,xlim=xlim,ylim=ylim,xlab=&quot;Prey&quot;,ylab=&quot;Predators&quot;)
 phasearrows.draw(new)</code></pre>
-<pre><code>## Warning in arrows(c(x), c(y), c(x + dx * z1/((lens2) + 0.1)), c(y + dx * :
-## zero-length arrow is of indeterminate angle and so skipped</code></pre>
+<pre><code>## Warning in arrows(c(x), c(y), c(x + dx * z1/((lens2) + 0.1)), c(y + dx * : zero-
+## length arrow is of indeterminate angle and so skipped</code></pre>
 <pre class="r"><code>abline((r/Alpha),-(c/Alpha),col=&quot;red&quot;,lwd=3)   # prey
 abline(v=q/Beta,col=&quot;blue&quot;,lwd=3)   # pred
 points(jitter(System[,1],500),jitter(System[,2],500),col=&quot;brown&quot;,pch=20,cex=0.3)
@@ -866,12 +934,55 @@ $(document).ready(function () {
 
 </script>
 
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

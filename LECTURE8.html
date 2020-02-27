@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="NRES 470/670" />
@@ -24,8 +24,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -34,10 +34,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -71,9 +73,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -87,13 +87,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -109,7 +114,6 @@ body {
   padding-top: 57px;
   margin-top: -57px;
 }
-
 .section h2 {
   padding-top: 57px;
   margin-top: -57px;
@@ -129,6 +133,43 @@ body {
 .section h6 {
   padding-top: 57px;
   margin-top: -57px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -150,47 +191,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -204,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -239,8 +305,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -249,6 +313,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -413,16 +487,13 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Stochasticity and Uncertainty</h1>
-<h4 class="author"><em>NRES 470/670</em></h4>
-<h4 class="date"><em>Feb 12, 2017</em></h4>
+<h4 class="author">NRES 470/670</h4>
+<h4 class="date">Feb 12, 2017</h4>
 
 </div>
 
 
-<div class="figure">
-<img src="uncertainty1.png" />
-
-</div>
+<p><img src="uncertainty1.png" /></p>
 <div id="uncertainty" class="section level2">
 <h2>Uncertainty!</h2>
 <p>All ecological systems are full of uncertainty. We all know it intuitively. But what <em>exactly</em> do we mean by that? And how can we deal with it? How can we incorporate it into our models?</p>
@@ -451,26 +522,20 @@ div.tocify {
 <li><p>Second, we usually can’t predict whether an individual will live or die, breed or not breed (whether an individual will “get lucky” so to speak!)? We might know the per-capita <em>probability</em> of breeding, or the <em>probability</em> of dying, or the per-capita <em>rate</em> of offspring production, or the probability of a given offspring being female. But when it comes to projecting who lives and dies, who gives birth and who doesn’t, how many females are born, we <em>just can’t know for sure</em>. This is an example of a system being <em>inherently unpredictable</em>. In population ecology this is called <strong>demographic stochasticity</strong>. In this case, the tool we use is <strong>computer-simulated “coin flipping”</strong>.</p></li>
 <li><p>Third, we usually can’t predict whether next year or the year after will be a good one or a bad one for a population- that is, whether the per-capita vital rates (e.g., <span class="math inline">\(b\)</span>, or <span class="math inline">\(d\)</span> or <span class="math inline">\(r\)</span>) will be more or less optimal year-to-year (whether a <em>population</em> will “get lucky”, so to speak). This is another example of a system being <em>inherently unpredictable</em>. In population ecology this is called <strong>environmental stochasticity</strong>. In this case, the tool we use is <strong>randomly varying vital-rates</strong>.</p></li>
 </ol>
-<div class="figure">
-<img src="dice1.png" />
-
-</div>
+<p><img src="dice1.png" /></p>
 </div>
 </div>
 <div id="random-number-generation" class="section level2">
 <h2>Random number generation</h2>
 <p>To incorporate uncertainty and randomness into our models, we need to include <em>stochastic</em> components so that each model run (replicate) – or each year of each model run – is different from one another. That is, we need to include at least one <strong>random number generator</strong> in our models! A random number generator is like a box of (potentially infinite) possible numbers – a lottery ball machine for example! Each time we want a new number we reach in and pull one out, record the number, put it back in and shake it up again.</p>
-<div class="figure">
-<img src="lottery1.png" />
-
-</div>
+<p><img src="lottery1.png" /></p>
 <p>Every random-number generator has a <strong>distribution</strong>. This is a way of defining what exactly is in the box. For example, the box might have 10 “ones”, 5 “twos”, and 2 “threes”. In this case the distribution looks like this (<em>probability</em> of each <em>possibility</em>):</p>
 <p><img src="LECTURE8_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>A probability distribution can be pretty much anything you want it to be. However, there are several key distributions that come up again and again in nature, and we should know them!</p>
 <div id="probability-distributions" class="section level3">
 <h3>Probability distributions</h3>
 </div>
-<div id="discrete-vs.continuous" class="section level3">
+<div id="discrete-vs.-continuous" class="section level3">
 <h3>Discrete vs. continuous</h3>
 <p>In <em>discrete distributions</em>, each outcome has a specific probability (like the probability of flipping a coin 10 times and getting 4 heads). For example, let’s consider a <em>binomial distribution</em></p>
 <p><img src="LECTURE8_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
@@ -536,16 +601,13 @@ rbeta(1,shape1=10,shape2=3)  # beta distribution is defined by &quot;shape1&quot
 hist(distribution,freq = F, ylab=&quot;Probability&quot;,xlab=&quot;Possibilities&quot;)  # visualize distribution</code></pre>
 <p><img src="LECTURE8_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <pre class="r"><code>sample(distribution,1)  # take one random sample from this distribution!</code></pre>
-<pre><code>## [1] 4</code></pre>
+<pre><code>## [1] 3</code></pre>
 </div>
 <div id="in-class-exercise-stochasticity-and-uncertainty" class="section level3">
 <h3>In-Class Exercise: Stochasticity and Uncertainty</h3>
 <p>These concepts (like everything in this class) are best understood by worked examples.</p>
 <p>Let’s start with a basic exponentially growing population that looks something like this:</p>
-<div class="figure">
-<img src="IM10.jpg" />
-
-</div>
+<p><img src="IM10.jpg" /></p>
 <div id="parameter-uncertainty" class="section level4">
 <h4><em>Parameter Uncertainty</em></h4>
 <ol style="list-style-type: decimal">
@@ -627,12 +689,55 @@ $(document).ready(function () {
 
 </script>
 
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

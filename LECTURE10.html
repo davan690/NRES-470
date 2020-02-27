@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="NRES 470/670" />
@@ -24,8 +24,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -34,10 +34,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -71,9 +73,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -87,13 +87,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -109,7 +114,6 @@ body {
   padding-top: 57px;
   margin-top: -57px;
 }
-
 .section h2 {
   padding-top: 57px;
   margin-top: -57px;
@@ -129,6 +133,43 @@ body {
 .section h6 {
   padding-top: 57px;
   margin-top: -57px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -150,47 +191,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -204,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -239,8 +305,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -249,6 +313,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -413,24 +487,18 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Intro to individual-based models (IBM)</h1>
-<h4 class="author"><em>NRES 470/670</em></h4>
-<h4 class="date"><em>Mar 6, 2017</em></h4>
+<h4 class="author">NRES 470/670</h4>
+<h4 class="date">Mar 6, 2017</h4>
 
 </div>
 
 
-<div class="figure">
-<img src="birds1.jpg" />
-
-</div>
+<p><img src="birds1.jpg" /></p>
 <p>So far in this class we have looked at the <strong>population</strong> as the fundamental unit that we are interested in modeling. This makes sense for a population ecology class! But we are all aware that populations consist of <strong>individuals</strong> that are semi-autonomous. Sometimes the questions we want to ask in ecology and conservation biology require us to zoom in on the processes that are occurring at the <em>individual level</em>.</p>
 <p>In some ways a population is hard to define- it can be a bit of an artificial concept. The individual is (mostly) a straightforward, biologically meaningful concept.</p>
 <p>Before we define how individual-based models differ from the population-level stock-flow models we have already been using, let’s first point out the similarities.</p>
 <p>First of all, the basic modeling workflow is ALWAYS the same, no matter what kind of model we want to use!</p>
-<div class="figure">
-<img src="model_wkflow1.jpg" />
-
-</div>
+<p><img src="model_wkflow1.jpg" /></p>
 <p>All models are a way to <strong>formalize our understanding about our study system</strong>.</p>
 <p><strong>Population-based models</strong> (PBM; i.e., models of <span class="math inline">\(N\)</span>) are the main type of model we consider in this class- because it is the most direct way to think about population dynamics: <span class="math inline">\(N\)</span> is our main variable of interest, and it is controlled by intrinsic (e.g., density-dependence, demographic stochasticity) and extrinsic (e.g., environmental stochasticity, harvest) factors.</p>
 <p><strong>Age/stage structured population-based models</strong> and <strong>sex structured population models</strong> (i.e., models of <span class="math inline">\(\mathbf{N}\)</span>, i.e., vector-structured <span class="math inline">\(N\)</span>) are a type of population model in which individuals are grouped together according to important traits like sex and age, with distinct population vital rates assigned to each group.</p>
@@ -447,10 +515,7 @@ div.tocify {
 <li><p>You should use PBM if your <em>primary information is at the population level</em> (e.g., the results of most mark-recapture analyses) – in which case the principle of parsimony dictates that you should build models at the population level!</p></li>
 </ul>
 <p><strong>Q</strong>: All populations are composed of individuals. Why then don’t we always model populations using individual-based models? (this could be a good exam question…)</p>
-<div class="figure">
-<img src="occam1.jpg" />
-
-</div>
+<p><img src="occam1.jpg" /></p>
 <p><strong>Q</strong>: What are some questions that might be best addressed using <strong>individual-based models (IBM)</strong>?</p>
 <p><strong>Q</strong>: What are some questions that might be best addressed using <strong>population-based models (PBM)</strong>?</p>
 <p><em>Individual-based models are powerful- but with power comes great responsibility!</em></p>
@@ -472,10 +537,7 @@ div.tocify {
 <p>The local management agency is about to start an experimental wolf reintroduction, but they want to know what to expect before making the final decision to go ahead with it.</p>
 <p>They give you some information to get a first guess but they promise that you’ll be able to come study the experimental setup once it’s underway.</p>
 <p>The hypothesis is that presence of wolves affects sheep populations in such a way that grass growth is promoted.</p>
-<div class="figure">
-<img src="sheep1.png" />
-
-</div>
+<p><img src="sheep1.png" /></p>
 </div>
 <div id="the-details" class="section level3">
 <h3>The details!</h3>
@@ -514,7 +576,7 @@ div.tocify {
 <p>First, go to InsightMaker and load up the demo individual-based model! <a href="https://insightmaker.com/insight/74158/ICE-Individual-based-model">Here is the link!</a>.</p>
 <ol style="list-style-type: decimal">
 <li><p>Make sure you can run the model and interpret the resulting figures.</p></li>
-<li>Try to adjust the number of sheep and wolves to meet your management goals:
+<li><p>Try to adjust the number of sheep and wolves to meet your management goals:</p>
 <ul>
 <li>Maintain viable populations of both sheep and wolves</li>
 <li>Maintain lush grass!</li>
@@ -550,12 +612,55 @@ $(document).ready(function () {
 
 </script>
 
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

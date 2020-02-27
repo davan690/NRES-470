@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="NRES 470/670" />
@@ -24,8 +24,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -34,10 +34,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -71,9 +73,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -87,13 +87,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -109,7 +114,6 @@ body {
   padding-top: 57px;
   margin-top: -57px;
 }
-
 .section h2 {
   padding-top: 57px;
   margin-top: -57px;
@@ -129,6 +133,43 @@ body {
 .section h6 {
   padding-top: 57px;
   margin-top: -57px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -150,47 +191,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -204,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -239,8 +305,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -249,6 +313,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -413,8 +487,8 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Lab 4: Matrix population models</h1>
-<h4 class="author"><em>NRES 470/670</em></h4>
-<h4 class="date"><em>Feb 10, 2017</em></h4>
+<h4 class="author">NRES 470/670</h4>
+<h4 class="date">Feb 10, 2017</h4>
 
 </div>
 
@@ -501,9 +575,9 @@ legend(&quot;topleft&quot;,col=cols,lwd=rep(2,3),legend=paste(&quot;Stage &quot;
 <div id="compute-lambda" class="section level4">
 <h4>Compute lambda</h4>
 <p>Clearly this is a growing population. But let’s see exactly what <span class="math inline">\(\lambda\)</span> is!</p>
-<pre class="r"><code>library(popbio)</code></pre>
-<pre><code>## Warning: package &#39;popbio&#39; was built under R version 3.3.2</code></pre>
-<pre class="r"><code>lambda(projection_matrix)</code></pre>
+<pre class="r"><code>library(popbio)
+
+lambda(projection_matrix)</code></pre>
 <pre><code>## [1] 1.138728</code></pre>
 <p>Pretty easy right?</p>
 <p>NOTE: we are using a “package” in R to make these analyses super easy! So if you don’t already have the “popbio” package, go to the “Packages” tab in R studio (should be at the top of the lower right panel), click on “Install”, and then type “popbio” in the “Packages” field in the pop-up window, then click on the “Install” button.</p>
@@ -533,8 +607,8 @@ legend(&quot;topleft&quot;,col=cols,lwd=rep(2,3),legend=paste(&quot;Stage &quot;
 <p>1a. Translate the above <em>life table</em> into a five-age-class transition matrix. In your written lab report, provide the transition matrix and describe the formulae used to compute the following two elements: (1) row 1 column 4 and (2) row 4 column 3. This is a bit harder than it sounds!</p>
 <p>Keep the following points in mind:</p>
 <ul>
-<li>Individuals are in “age class 1” if they are between the ages of 0 and 1. They transition to “age-class 2” (<span class="math inline">\(P_{1 \rightarrow 2}\)</span>) if they survive to age 1 (at which point they are now entering age class two!). Yes this can be confusing!<br />
-</li>
+<li><p>Individuals are in “age class 1” if they are between the ages of 0 and 1. They transition to “age-class 2” (<span class="math inline">\(P_{1 \rightarrow 2}\)</span>) if they survive to age 1 (at which point they are now entering age class two!). Yes this can be confusing!<br />
+</p></li>
 <li><p>For individuals of “Age class 1” to contribute new offpring (individuals of age-class 1) to the population in the next time step (<span class="math inline">\(F_1\)</span>), they have to survive their first year of life (<span class="math inline">\(P_{1 \rightarrow 2}\)</span>) AND produce offspring when they are exactly 1 year of age (which they do at the rate of <span class="math inline">\(b\)</span> at age 1).</p></li>
 <li><p>No individual ever stays in the same age-class two time steps in a row- they either transition to the next age-class or they die.</p></li>
 </ul>
@@ -546,10 +620,7 @@ legend(&quot;topleft&quot;,col=cols,lwd=rep(2,3),legend=paste(&quot;Stage &quot;
 <div id="exercise-2-translate-insightmaker-to-projection-matrix" class="section level2">
 <h2>Exercise 2: translate InsightMaker to projection matrix!</h2>
 <p>Return to the InsightMaker model you created in Lab 3 (exercise 3 – that is, the original model, without the carrying capacity component you implemented in Exercise 4 of Lab 3). Your model should look something like this:</p>
-<div class="figure">
-<img src="IM11.jpg" />
-
-</div>
+<p><img src="IM11.jpg" /></p>
 <p>Make sure the parameters are at the original values specified in Exercise 3 of Lab 3 (before altering mortality rates as part of lab 3 question 3e.)</p>
 <p>2a. Translate this InsightMaker model into a projection matrix. This is not quite as straightforward as it might sound. Pay close attention to the difference between survival (transition to the next stage class) and mortality. In your write-up please provide your transition matrix.</p>
 <p>2b. Starting with 75 individuals, all in Age class 1, project the population 20 years into the future, using both InsightMaker and R. You don’t need to show your R code or the InsightMaker model this time- just provide graphical evidence (that is, provide two plots- one showing the results of the R simulation and the other showing the results of the InsightMaker simulation). These plots should look essentially the same!</p>
@@ -575,19 +646,14 @@ stmat</code></pre>
 <div id="exercise-3.-translate-plain-english-to-projection-matrix" class="section level2">
 <h2>Exercise 3. Translate plain English to projection matrix!</h2>
 <p>This should be quick and relatively painless! As a test of your understanding, try to implement the following passage as a matrix projection model:</p>
-<div class="figure">
-<img src="redtail1.jpg" />
-
-</div>
+<p><img src="redtail1.jpg" /></p>
 <blockquote>
 <p>We assumed that the Red-tailed hawk life history could be described in terms of three major life stages: hatchling, juvenile, and adult (generally the third year of life and beyond). Adults are the primary reproductive stage, and produce an average of 3 new hatchlings each year. Juveniles tend to produce only 1 new hatchling per year on average. We assumed that adults experienced an average of 18% mortality each year. Juvenile mortality was set at 30% per year. Approximately 5% of juveniles fail to transition to adults, remaining in the juvenile phase. Finally, hatchlings had a 20% chance of surviving and transitioning to become juveniles. We initialized the population with 1000 hatchlings, 150 juveniles, and 5 adults.</p>
 </blockquote>
 <p>3a. Provide your transition matrix in your write-up.</p>
 <p>3b. Is this population at S.A.D. at time 0? If not, provide an example of an initial population structure that IS at S.A.D.</p>
 <p>3c. What is the finite growth rate, Lambda, for this population (at S.A.D.)?</p>
-</div>
-<div id="checklist-for-lab-4-completion" class="section level2">
-<h2>Checklist for Lab 4 completion</h2>
+<p>##Checklist for Lab 4 completion</p>
 <ul>
 <li><p>Please bundle all your responses into a single Word document and submit <em>using WebCampus</em>!</p></li>
 <li><p>URLs for your InsightMaker models should be pasted in your lab submission (MS Word document). See details below…</p>
@@ -595,7 +661,7 @@ stmat</code></pre>
 <li>After you save the model you should see a link on the top left-hand corner, “Insight Access”. Click on that link, and a new window will pop up. Under “allow update access”, add a username (i.e., kevintshoemaker or waldenTA). click on the “Add User” button, and then click on “Submit”. Finally, copy and paste the URL into the Word document.</li>
 </ul></li>
 </ul>
-<p><strong><em>Due Mar. 3 at 11 am.</em></strong></p>
+<p><strong><em>Due Mar. 3 at 11 am.</em></strong></p>
 <ul>
 <li>Word document with short answers
 <ul>
@@ -648,12 +714,55 @@ $(document).ready(function () {
 
 </script>
 
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

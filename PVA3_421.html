@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="NRES 421/621" />
@@ -24,8 +24,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -34,10 +34,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -71,9 +73,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -87,13 +87,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -109,7 +114,6 @@ body {
   padding-top: 57px;
   margin-top: -57px;
 }
-
 .section h2 {
   padding-top: 57px;
   margin-top: -57px;
@@ -129,6 +133,43 @@ body {
 .section h6 {
   padding-top: 57px;
   margin-top: -57px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -150,47 +191,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -204,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -239,8 +305,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -249,6 +313,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -413,8 +487,8 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Loggerhead PVA example</h1>
-<h4 class="author"><em>NRES 421/621</em></h4>
-<h4 class="date"><em>Mar 26, 2017</em></h4>
+<h4 class="author">NRES 421/621</h4>
+<h4 class="date">Mar 26, 2017</h4>
 
 </div>
 
@@ -431,20 +505,11 @@ div.tocify {
 <a href="http://www.tpwd.state.tx.us/huntwild/wild/species/endang/animals/reptiles_amphibians/logghead.phtml"></a></p>
 <div id="background" class="section level3">
 <h3>Background</h3>
-<div class="figure">
-<img src="loggerhead2.jpg" />
-
-</div>
+<p><img src="loggerhead2.jpg" /></p>
 <p>The loggerhead turtle, <em>C. caretta</em>, is a large marine turtle that nests along the Atlantic coast from New Jersey to Texas, but is also found along the Pacific coast and in Hawaii.</p>
-<div class="figure">
-<img src="loggerhead4.jpg" />
-
-</div>
+<p><img src="loggerhead4.jpg" /></p>
 <p>The species has been federally listed as ‘threatened’ since 1978. When a species is listed, the Endangered Species Act (ESA) requires that a recovery plan be drafted whose goal is to eventually remove the species from the list.</p>
-<div class="figure">
-<img src="loggerhead3.jpg" />
-
-</div>
+<p><img src="loggerhead3.jpg" /></p>
 </div>
 <div id="threats" class="section level3">
 <h3>Threats</h3>
@@ -452,10 +517,7 @@ div.tocify {
 <ol style="list-style-type: decimal">
 <li><strong>Threats to nesting beaches</strong></li>
 </ol>
-<div class="figure">
-<img src="loggerhead5.jpg" />
-
-</div>
+<p><img src="loggerhead5.jpg" /></p>
 <p>Adult females lay their eggs (ca. three nests every 2-3 years, up to 190 eggs/nest) on sandy beaches between April and September. Eggs incubate under the sand for about 2 months, and juveniles make a mad dash for the water upon hatching.<br />
 Because beaches are popular sites for human recreation and development, arriving female turtles and hatching juveniles face risks including</p>
 <ul>
@@ -472,10 +534,7 @@ Because beaches are popular sites for human recreation and development, arriving
 <ul>
 <li>Hatchlings and juveniles feed in coastal seagrass mats which are also frequented by shrimp boats and other inshore trawling vessels. Hence <em>accidental capture (“bycatch”)</em> and subsequent drowning in the nets and traps used by these vessels is common.</li>
 </ul>
-<div class="figure">
-<img src="trawl1.png" />
-
-</div>
+<p><img src="trawl1.png" /></p>
 <ul>
 <li><p>Moreover, during cold temperatures turtles may go dormant, burying themselves in muddy bays and estuaries. While dormant they can be killed by periodic <em>dredging</em> to maintain bays and waterways.</p></li>
 <li><p>Moreover, human-produced debris (styrofoam peanuts, plastic bags, tar balls, and balloons) may cause <em>entanglement</em>, stranding, and drowning.</p></li>
@@ -529,10 +588,7 @@ Because beaches are popular sites for human recreation and development, arriving
 <ul>
 <li>Your initial spreadsheet should look something like this:</li>
 </ul>
-<div class="figure">
-<img src="loggerhead6.jpg.png" />
-
-</div>
+<p><img src="loggerhead6.jpg.png" /></p>
 <ul>
 <li>Use the transition rates to complete the baseline projection matrix for the loggerhead turtles. For example, the yearly transition probability from large juveniles to large juveniles (<span class="math inline">\(S_3\)</span>) is 0.657. Recall that the transition rates are:</li>
 </ul>
@@ -586,10 +642,7 @@ projection_matrix</code></pre>
 <li>20 size-class 5 (Adults)</li>
 </ul>
 <p>So your EXCEL file should look something like the one below (but with the transition rates filled in!):</p>
-<div class="figure">
-<img src="loggerhead7.png" />
-
-</div>
+<p><img src="loggerhead7.png" /></p>
 <p>Using the ‘size-distribution vector’, we can project the population size of each size-class next year using the matrix formula: <span class="math inline">\(\mathbf{N}_{t+1} = \mathbf{A} \cdot \mathbf{N}_{t}\)</span> .</p>
 <p>This formula calculates the size distribution next year (i.e., in year <em>t + 1</em>) based on the projection matrix <span class="math inline">\(\mathbf{A}\)</span> and the size distribution this year <span class="math inline">\(\mathbf{N}_{t}\)</span>.</p>
 <p>For example, to calculate the first row of [n]t +1, the number of hatchlings:</p>
@@ -667,7 +720,7 @@ legend(&quot;topright&quot;,col=cols,lwd=rep(2,3),legend=paste(&quot;Stage &quot
 </ul></li>
 </ol>
 <div class="figure">
-<img src="TED1.jpg" alt="turtle excluder device" />
+<img src="TED1.jpg" alt="" />
 <p class="caption">turtle excluder device</p>
 </div>
 <p>For each scenario, consider:</p>
@@ -710,12 +763,55 @@ $(document).ready(function () {
 
 </script>
 
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
